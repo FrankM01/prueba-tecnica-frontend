@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+import { useFetch } from './useFetch';
 import './App.css';
 
 function App() {
+  const { data, loading } = useFetch('http://localhost:8092/api/v1/futbolistas');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Futbolistas</h1>
+      <div className="card">
+        {loading ? (
+          <p>Cargando...</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Características</th>
+                <th>Posición</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map((user) => (
+                <tr key={user.idFutbolista}>
+                  <td>{user.idFutbolista}</td>
+                  <td>{user.nombre}</td>
+                  <td>{user.apellido}</td>
+                  <td>{user.fechaNacimiento}</td>
+                  <td>{user.caracteristicas}</td>
+                  <td>{user.posicion.nombrePosicion}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
